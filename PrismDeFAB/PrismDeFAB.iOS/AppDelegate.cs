@@ -25,6 +25,9 @@ namespace PrismDeFAB.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+
+            FAB.iOS.FloatingActionButtonRenderer.InitControl();
+
             LoadApplication(new App(new iOSInitializer()));
 
             return base.FinishedLaunching(app, options);

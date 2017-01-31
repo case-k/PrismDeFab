@@ -2,10 +2,41 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:fab="clr-namespace:FAB.Forms;assembly=FAB.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="PrismDeFAB.Views.MainPage"
              Title="MainPage">
-  <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-    <Label Text="{Binding Title}" />
-  </StackLayout>
+
+  <ContentPage.Padding>
+    <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
+  </ContentPage.Padding>
+
+  <RelativeLayout>
+    <StackLayout
+      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+
+      <ListView ItemsSource="{Binding ListItems}">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <TextCell Text="{Binding Title}" Detail="{Binding Detail}">
+              <TextCell.ContextActions>
+                <MenuItem Text="Delete" IsDestructive="true" />
+              </TextCell.ContextActions>
+            </TextCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+
+    </StackLayout>
+    <fab:FloatingActionButton
+      NormalColor="#FF8BC0"
+      Source="plus.png"
+      Size="Normal"
+      RippleColor="Gray"
+      Command="{Binding FabCommand}"
+      RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=-75}"
+      RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=-75}" />
+  </RelativeLayout>
+
 </ContentPage>

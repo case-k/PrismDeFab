@@ -1,35 +1,43 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 
 namespace PrismDeFAB.ViewModels
 {
-    public class MainPageViewModel : BindableBase, INavigationAware
+    public class TListItem
     {
-        private string _title;
-        public string Title
+        public string Title { get; set; }
+        public string Detail { get; set; }
+    }
+
+    public class MainPageViewModel : BindableBase
+    {
+        private IPageDialogService _pageDialogService;
+
+        public ICommand FabCommand { get; }
+        public List<TListItem> ListItems { get; }
+
+        public MainPageViewModel(IPageDialogService pageDialogService)
         {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+            _pageDialogService = pageDialogService;
+            FabCommand = new DelegateCommand(Fab);
+
+            ListItems = new List<TListItem>();
+            for (int i = 0; i < 100; i++)
+            {
+                ListItems.Add(new TListItem() { Title = $"title-{i}", Detail = $"detail-{i}" });
+            }
         }
 
-        public MainPageViewModel()
+        async private void Fab()
         {
-
+            await _pageDialogService.DisplayAlertAsync("FAB", "FABったね、オヤジにもFABられたことないのに", "OK");
         }
 
-        public void OnNavigatedFrom(NavigationParameters parameters)
-        {
-
-        }
-
-        public void OnNavigatedTo(NavigationParameters parameters)
-        {
-            if (parameters.ContainsKey("title"))
-                Title = (string)parameters["title"] + " and Prism";
-        }
     }
 }
